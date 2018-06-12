@@ -88,6 +88,7 @@
     <string name="exit">Exit</string>
     <string name="information">Information</string>
     <string name="forgot_password">Forgot password</string>
+    <string name="forgot_password_resetting">Resetting forgotten password</string>
     <string name="sync">Sync</string>
     <string name="pause">Pause</string>
     <string name="resume">Resume</string>
@@ -119,7 +120,7 @@
 •	Use the Update Tree feature to locate and update your tree status.\n
 •	Your app’s default setting requires ten (10) meter GPS accuracy. Changing your settings to reduced GPS accuracy may affect the Update Tree feature.\n
 •	For full details of how this application can benefit your tree planting project visit  www.TreeTracker.org\n
-•	This Application is in development. If you have any requests or bug reports please email to  support@treetreacker.org\n
+•	This Application is in development. If you have any requests or bug reports please email to  support@treetracker.org\n
 </string>
 
 

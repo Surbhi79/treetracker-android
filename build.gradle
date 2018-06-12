@@ -3,10 +3,11 @@
 buildscript {
     repositories {
         jcenter()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
-
+        classpath 'com.android.tools.build:gradle:3.1.1'
+        classpath 'com.google.gms:google-services:3.1.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -16,13 +17,21 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        google()
+        maven {
+            url "https://maven.google.com" // Google's Maven repository
+        }
     }
     ext {
         androidSupportVersion = '25.2.0'
         retrofit2Version = '2.3.0'
+        dos_access_key = "configure in treetracker.keys.properties"
+        dos_secret_key = "configure in treetracker.keys.properties"
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+

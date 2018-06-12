@@ -28,9 +28,9 @@ import android.widget.Toast;
 import org.greenstand.android.TreeTracker.database.DatabaseManager;
 import org.greenstand.android.TreeTracker.activities.MainActivity;
 import org.greenstand.android.TreeTracker.R;
-import org.greenstand.android.TreeTracker.api.SyncTask;
+import org.greenstand.android.TreeTracker.managers.SyncTask;
 import org.greenstand.android.TreeTracker.utilities.ValueHelper;
-import org.greenstand.android.TreeTracker.api.models.UserTree;
+import org.greenstand.android.TreeTracker.api.models.responses.UserTree;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -58,7 +58,7 @@ public class DataFragment extends Fragment implements View.OnClickListener, Sync
     private AlbumStorageDirFactory mAlbumStorageDirFactory;
     private SharedPreferences mSharedPreferences;
 
-    private AsyncTask<Void, Void, String> syncTask;
+    private AsyncTask<Void, Integer, String> syncTask;
 
     public DataFragment() {
         mDatabaseManager = DatabaseManager.getInstance(MainActivity.dbHelper);
@@ -171,7 +171,7 @@ public class DataFragment extends Fragment implements View.OnClickListener, Sync
         }
     }
 
-    private void updateData() {
+    public void updateData() {
         mDatabaseManager.openDatabase();
 
         Cursor treeCursor = mDatabaseManager.queryCursor("SELECT COUNT(*) AS total FROM tree", null);
@@ -205,7 +205,7 @@ public class DataFragment extends Fragment implements View.OnClickListener, Sync
         Cursor treeCursor = mDatabaseManager.queryCursor("SELECT DISTINCT tree_id FROM pending_updates WHERE tree_id NOT NULL and tree_id <> 0", null);
         List<UserTree> trees = ((MainActivity)getActivity()).getUserTrees();
 
-        if (treeCursor.moveToFirst()) {
+        if (!(trees == null) && treeCursor.moveToFirst()) {
             new UpdateLocalDb().execute(trees);
         }
 
@@ -282,6 +282,11 @@ public class DataFragment extends Fragment implements View.OnClickListener, Sync
     public void onPostExecute(String message) {
         updateData();
         Toast.makeText(getActivity(), "Sync " + message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onProgressUpdate(Integer... values) {
+        updateData();
     }
 
     class UpdateLocalDb extends AsyncTask<List<UserTree>, Void, Void> {
@@ -368,6 +373,12 @@ public class DataFragment extends Fragment implements View.OnClickListener, Sync
                 mDatabaseManager.closeDatabase();
             }
             return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+
         }
 
         @Override
